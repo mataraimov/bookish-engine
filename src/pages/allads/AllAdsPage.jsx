@@ -72,6 +72,19 @@ const AllAdsPage = () => {
     };
 
     const uniqueValues = (key) => [...new Set(ads.map(ad => ad[key]))];
+
+    const handleNextPage = () => {
+        const nextPage = page + 1;
+        if ((nextPage - 1) * itemsPerPage < totalItems) {
+            setPage(nextPage);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (page > 1) {
+            setPage(page - 1);
+        }
+    };
 // const fetchAds = async (currentPage) => {
     //     try {
     //         const response = await fetch(`https://api.example.com/ads?page=${currentPage}&limit=${itemsPerPage}`);
@@ -155,6 +168,9 @@ const AllAdsPage = () => {
                     </div>
                 ))}
             </div>
+            <button onClick={handlePrevPage} disabled={page === 1}>Назад</button>
+            <p>{page}/{totalPages} </p>
+            <button onClick={handleNextPage} disabled={page * itemsPerPage >= totalItems}>Вперед</button>
         </div>
     );
 };

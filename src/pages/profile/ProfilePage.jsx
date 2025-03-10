@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../App.jsx';
 // import {getUserAds, getUserProfile} from "../../app/api.js";
-// sdfdsfsdfsasdasd
 
 const ProfilePage = () => {
     const { id } = useParams();
@@ -129,7 +128,7 @@ const ProfilePage = () => {
                     <h2>{profile?.username}</h2>
                     <p>📞 {profile?.phone}</p>
                     {!id && ( // Only show for own profile
-                        <button onClick={() => navigate('/user/edit')}>Изменить профиль</button>
+                        <button onClick={() => navigate('/user/change')}>Изменить профиль</button>
                     )}
                 </div>
             </div>

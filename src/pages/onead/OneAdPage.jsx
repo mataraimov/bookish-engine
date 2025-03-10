@@ -94,7 +94,7 @@ const OneAdPage = () => {
             {ad.seller.id && (
                 <div>
                     <h2>Seller Information</h2>
-                    <div onClick={() => navigate(`/seller/${ad.seller.id}`)} style={{cursor: "pointer"}}>
+                    <div onClick={() => navigate(`/user/${ad.seller.id}`)} style={{cursor: "pointer"}}>
                         {ad.seller.profilePic && <img src={ad.seller.profilePic} alt={ad.seller.name}
                                                       style={{width: "50px", borderRadius: "50%"}}/>}
                         <p>{ad.seller.name}</p>
