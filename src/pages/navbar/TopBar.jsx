@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './TopBarStyle.css';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { UserContext } from "../../App.jsx";
-import {getNewMessagesCount, getUserNotifications} from "../../app/api.js";
+import {getNewMessagesCountR, getUserNotificationsR} from "../../app/tempApi.js";
 
 const Topbar = () => {
     const [user,setUser] = useContext(UserContext);
@@ -13,28 +13,34 @@ const Topbar = () => {
 
     useEffect(() => {
         if (user) {
+            const fetchNewMessages = async () => {
+                try {
+                    const response = await getNewMessagesCountR();
+                    if (response.status === 200||response.status === 201) {
+                        setNewMessages(response.data);
+                    } else {
+                        setNewMessages(0);
+                    }
+                } catch (error) {
+                    console.error("Ошибка при загрузке сообщений:", error);
+                }
+            };
+            const fetchNotifications = async () => {
+                try {
+                    const data = await getUserNotificationsR();
+                    if (data.status === 200||data.status === 201) {
+                        setNotifications(data.data);
+                    } else {
+                        setNotifications([])
+                    }
+                } catch (error) {
+                    console.error("Ошибка при загрузке уведомлений:", error);
+                }
+            };
             fetchNewMessages();
             fetchNotifications();
         }
     }, [user]);
-
-    const fetchNewMessages = async () => {
-        try {
-            const count = await getNewMessagesCount();
-            setNewMessages(count);
-        } catch (error) {
-            console.error("Ошибка при загрузке сообщений:", error);
-        }
-    };
-
-    const fetchNotifications = async () => {
-        try {
-            const data = await getUserNotifications();
-            setNotifications(data);
-        } catch (error) {
-            console.error("Ошибка при загрузке уведомлений:", error);
-        }
-    };
 
     const userChecker = ()=>{
         if (user){
@@ -68,7 +74,9 @@ const Topbar = () => {
                                                 <li key={index}>
                                                     {notification.message}{' '}
                                                     {notification.ad && (
-                                                        <a href={notification.ad.link}>Перейти к объявлению</a>
+                                                        <Link to={notification.link}>
+                                                            {notification.ad}
+                                                        </Link>
                                                     )}
                                                 </li>
                                             ))}

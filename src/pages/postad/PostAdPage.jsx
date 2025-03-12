@@ -1,11 +1,11 @@
 import './PostAdPageStyle.css'
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getAnimalsList, postAd} from "../../app/api.js";
+import { useNavigate } from 'react-router-dom';
+import { getAnimalsListR, postAdR} from "../../app/tempApi.js";
+import {useCheckUser} from "../../hooks/useCheckUser.js";
 
 
 const PostAdPage = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         animal: '',
@@ -18,19 +18,21 @@ const PostAdPage = () => {
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem("access_token")
+
+    useCheckUser()
 
     useEffect(() => {
         const fetchAdEssentials = async () => {
             try {
-                let animalsList = await getAnimalsList();
+                let animalsList = await getAnimalsListR(token);
                 setAnimals(animalsList);
-                // eslint-disable-next-line no-unused-vars
             } catch (err) {
-                setError('Ошибка загрузки объявления.');
+                setError(err||'Ошибка загрузки объявления.');
             }
         };
         fetchAdEssentials();
-    }, [id]);
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,13 +53,12 @@ const PostAdPage = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await postAd(id, formData);
+            const response = await postAdR(token, formData);
             if (response.status === 200 || response.status === 201) {
                 navigate('/ad/my-ads');
             }
-            // eslint-disable-next-line no-unused-vars
         } catch (err) {
-            setError('Ошибка обновления объявления.');
+            setError(err||'Ошибка обновления объявления.');
         } finally {
             setLoading(false);
         }

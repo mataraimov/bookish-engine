@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import './UserAdsPageStyle.css'
 import { useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {useCheckUser} from "../../hooks/useCheckUser.js";
+import {getUserAdsR} from "../../app/tempApi.js";
 
 const UserAdsPage = () => {
     const [ads, setAds] = useState([]);
@@ -11,8 +13,11 @@ const UserAdsPage = () => {
     const navigate = useNavigate();
     const itemsPerPage = 7;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    useCheckUser()
+
     useEffect(() => {
-        generateDummyAds();
+        getThisUserAds();
     }, []);
     useEffect(() => {
         checkAds();
@@ -23,22 +28,35 @@ const UserAdsPage = () => {
         setFilteredAds(ads.slice(startIndex, startIndex + itemsPerPage));
     }
 
-    const generateDummyAds = () => {
-        const regions = ["Bishkek", "Osh", "Chuy", "Talas", "Naryn", "Issyk-Kul", "Jalal-Abad", "Batken", "Osh Region"];
-        const ages = ["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"];
-        const allAds = Array.from({length: 35}, (_, i) => ({
-            id: i + 1,
-            animal: i % 2 === 0 ? "Cow" : "Horse",
-            breed: i % 2 === 0 ? "Angus" : "Arabian",
-            age: ages[i % ages.length],
-            region: regions[i % regions.length],
-            price: 30000 + (i * 2000),
-            photoUrl: `https://example.com/photos/animal${i + 1}.jpg`,
-        }));
-        setAds(allAds);
-        setFilteredAds(allAds.slice(0, itemsPerPage));
-        setTotalItems(allAds.length);
+    const getThisUserAds = async () => {
+        const response = await getUserAdsR();
+        setAds(response.data);
+        setFilteredAds(response.data.slice(0, itemsPerPage));
+        setTotalItems(response.data.length);
     };
+
+    const calculateAgeInMonths = (birthDate) => {
+        const birth = new Date(birthDate);
+        const today = new Date();
+        return (today.getFullYear() - birth.getFullYear()) * 12 + (today.getMonth() - birth.getMonth());
+    };
+
+    const calculateAgeInYears = (months) => {
+        switch (Math.floor(months/12)){
+            case 0:
+                return (Math.floor(months/12)+' лет');
+            case 1:
+                return (Math.floor(months/12)+' год')
+            case 2:
+                return (Math.floor(months/12)+' года')
+            case 3:
+                return (Math.floor(months/12)+' года')
+            case 4:
+                return (Math.floor(months/12)+' года')
+            default:
+                return (Math.floor(months/12)+' лет')
+        }
+    }
 
     const handleNextPage = () => {
         const nextPage = page + 1;
@@ -52,16 +70,6 @@ const UserAdsPage = () => {
             setPage(page - 1);
         }
     };
-    // const fetchAds = async (currentPage) => {
-    //     try {
-    //         const response = await fetch(`https://api.example.com/ads?page=${currentPage}&limit=${itemsPerPage}`);
-    //         const data = await response.json();
-    //         setAds(data.ads);
-    //         setTotalItems(data.totalItems);
-    //     } catch (error) {
-    //         console.error("Error fetching ads:", error);
-    //     }
-    // };
     return (
         <div>
             <div>
@@ -71,9 +79,9 @@ const UserAdsPage = () => {
                         <div key={ad.id} onClick={() => navigate(`/ad/${ad.id}`)} style={{cursor: "pointer"}}>
                             <img src={ad.photoUrl} alt={ad.breed}/>
                             <h2>{ad.breed} ({ad.animal})</h2>
-                            <p>Age: {ad.age}</p>
-                            <p>Region: {ad.region}</p>
-                            <p>Price: {ad.price} som</p>
+                            <p>Возраст: {calculateAgeInMonths(ad.birthDate)} ({calculateAgeInYears(calculateAgeInMonths(ad.birthDate))})</p>
+                            <p>Регион Продажи: {ad.region}</p>
+                            <p>Цена: {ad.price} som</p>
                         </div>
                     ))}
                 </div>

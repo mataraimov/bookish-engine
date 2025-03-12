@@ -1,7 +1,8 @@
 import './ChangeAdPageStyle.css'
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {getAdById, getAnimalsList, updateAd} from "../../app/api.js";
+import {getAdByIdR, getAnimalsListR, updateAdR} from "../../app/tempApi.js";
+import {useCheckUser} from "../../hooks/useCheckUser.js";
 
 const ChangeAdPage = () => {
     const { id } = useParams();
@@ -12,29 +13,38 @@ const ChangeAdPage = () => {
         age: '',
         price: '',
         description: '',
+        seller:{
+            id:'',
+            name:'',
+            phone:'',
+            profilePic:'',
+        },
         photos: [],
     });
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem('access_token');
+
+    useCheckUser()
 
     useEffect(() => {
         const fetchAdData = async () => {
             try {
-                const adData = await getAdById(id);
-                let animalsList = await getAnimalsList();
+                const adData = await getAdByIdR(id,token);
+                let animalsList = await getAnimalsListR(token);
                 setFormData({
-                    animal: adData.animal,
-                    breed: adData.breed,
-                    age: adData.age,
-                    price: adData.price,
-                    description: adData.description,
-                    photos: adData.photos,
+                    animal: adData.data.animal,
+                    breed: adData.data.breed,
+                    age: adData.data.age,
+                    price: adData.data.price,
+                    description: adData.data.description,
+                    seller:adData.data.seller,
+                    photos: adData.data.photos,
                 });
-                setAnimals(animalsList);
-                // eslint-disable-next-line no-unused-vars
+                setAnimals(animalsList.data)
             } catch (err) {
-                setError('Ошибка загрузки объявления.');
+                setError(err||'Ошибка загрузки объявления.');
             }
         };
         fetchAdData();
@@ -59,7 +69,7 @@ const ChangeAdPage = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await updateAd(id, formData);
+            const response = await updateAdR(id,token, formData);
             if (response.status === 200 || response.status === 201) {
                 navigate('/ad/my-ads');
             }

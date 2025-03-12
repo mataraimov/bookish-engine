@@ -1,7 +1,7 @@
 import './ForgotPageStyle.css'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {sendPasswordReset} from "../../app/api.js";
+import {sendPasswordResetR} from "../../app/tempApi.js";
 
 const ForgotPage = () => {
     const [email, setEmail] = useState('');
@@ -17,8 +17,8 @@ const ForgotPage = () => {
         setError(null);
 
         try {
-            const response = await sendPasswordReset(email);
-            if (response.success) {
+            const response = await sendPasswordResetR(email);
+            if (response.status ===200 || response.status === 201) {
                 setMessage('Ссылка для восстановления пароля отправлена на вашу почту.');
                 setTimeout(() => navigate('/'), 3000);
             } else {

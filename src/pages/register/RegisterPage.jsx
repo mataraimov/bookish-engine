@@ -1,7 +1,7 @@
 import './RegisterPageStyle.css';
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {registerUser} from '../../app/api.js';
+import {registerUserR} from '../../app/api.js';
 import countryPhoneCodes from '../../app/countryPhoneCodes.jsx';
 
 const RegisterPage = () => {
@@ -85,7 +85,7 @@ const RegisterPage = () => {
         }
 
         try {
-            const response = await registerUser(formData);
+            const response = await registerUserR(formData);
             if (response.status === 200 || response.status === 201) {
                 navigate('/confirm-email');
             } else {

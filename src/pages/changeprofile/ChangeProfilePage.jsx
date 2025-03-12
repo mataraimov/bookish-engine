@@ -1,7 +1,8 @@
 import './ChangeProfilePageStyle.css'
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {updateUserProfile} from "../../app/api.js";
+import {Link, useNavigate} from 'react-router-dom';
+import {useCheckUser} from "../../hooks/useCheckUser.js";
+import {updateUserProfileR} from "../../app/tempApi.js";
 
 const ChangeProfilePage = ({ user }) => {
     const [formData, setFormData] = useState({
@@ -12,6 +13,9 @@ const ChangeProfilePage = ({ user }) => {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    useCheckUser()
 
     useEffect(() => {
         if (user) {
@@ -37,8 +41,10 @@ const ChangeProfilePage = ({ user }) => {
         e.preventDefault();
         setError('');
         try {
-            await updateUserProfile(formData);
-            navigate('/profile');
+            const response = await updateUserProfileR(token,formData);
+            if (response.status === 200 || response.status === 201) {
+                navigate('/profile');
+            }
         } catch (err) {
             setError(err.message || 'Ошибка обновления профиля');
         }
@@ -56,7 +62,6 @@ const ChangeProfilePage = ({ user }) => {
                     onChange={handleChange}
                     required
                 />
-
                 <label>Фото профиля:</label>
                 <input
                     type="file"
@@ -64,7 +69,6 @@ const ChangeProfilePage = ({ user }) => {
                     accept="image/*"
                     onChange={handleChange}
                 />
-
                 <label>Номер телефона:</label>
                 <input
                     type="text"
@@ -73,7 +77,6 @@ const ChangeProfilePage = ({ user }) => {
                     onChange={handleChange}
                     required
                 />
-
                 <label>Пароль (для подтверждения):</label>
                 <input
                     type="password"
@@ -82,11 +85,10 @@ const ChangeProfilePage = ({ user }) => {
                     onChange={handleChange}
                     required
                 />
-
                 <button type="submit">Сохранить изменения</button>
             </form>
             {error && <div className="error-message">{error}</div>}
-            <p>Забыли пароль? <a href="/login/forgot-password">Восстановить</a></p>
+            <p>Забыли пароль? <Link href="/login/forgot-password">Восстановить</Link></p>
         </div>
     );
 };

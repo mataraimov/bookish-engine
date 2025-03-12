@@ -3,6 +3,7 @@ import './ProfilePageStyle.css'
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../App.jsx';
+import {getUserByIdR, getUserR} from "../../app/tempApi.js";
 // import {getUserAds, getUserProfile} from "../../app/api.js";
 
 const ProfilePage = () => {
@@ -15,6 +16,7 @@ const ProfilePage = () => {
     const [allAds, setAllAds] = useState([]); // Store all ads
     const [hasMoreAds, setHasMoreAds] = useState(false);
     const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem("access_token")
 
     useEffect(() => {
         setLoading(true);
@@ -25,36 +27,14 @@ const ProfilePage = () => {
         }
     }, [id, user]);
 
-    const fetchProfile = async (profileId) => {
+    const fetchProfile = async (id) => {
         try {
-            console.log('Fetching profile for user:', profileId);
-            await new Promise(resolve => setTimeout(resolve, 500));
+            const response = await getUserByIdR(id,token)
 
-            const dummyProfile = {
-                id: profileId,
-                username: `Пользователь ${profileId}`,
-                phone: '+996 555 123 456',
-                photo: 'https://via.placeholder.com/100',
-                allAds: [ // Full list of ads
-                    { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://via.placeholder.com/150' }
-                ]
-            };
-
-            setProfile(dummyProfile);
-            setAllAds(dummyProfile.allAds); // Store all ads
-            setAds(dummyProfile.allAds.slice(0, 10)); // Display only first 10
-            if (dummyProfile.allAds.length > 10) {
+            setProfile(response.data);
+            setAllAds(response.data.all_ads);
+            setAds(response.data.all_ads.slice(0, 10));
+            if (response.data.all_ads.length > 10) {
                 setHasMoreAds(true);
             } else {
                 setHasMoreAds(false);
@@ -68,35 +48,11 @@ const ProfilePage = () => {
 
     const fetchOwnProfile = async () => {
         try {
-            console.log('Fetching own profile...');
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            const dummyOwnProfile = {
-                id: user?.id || 'me',
-                username: user?.username || 'Мой профиль',
-                phone: user?.phone || '+996 777 888 999',
-                photo: user?.photo || 'https://via.placeholder.com/100',
-                allAds: [ // Full list of ads
-                    { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '11', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '12', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-
-                ]
-            };
-
-            setProfile(dummyOwnProfile);
-            setAllAds(dummyOwnProfile.allAds); // Store all ads
-            setAds(dummyOwnProfile.allAds.slice(0, 10)); // Display only first 10
-            if (dummyOwnProfile.allAds.length > 10) {
+            const ownResponse = await getUserR(token)
+            setProfile(ownResponse.data);
+            setAllAds(ownResponse.data.all_ads);
+            setAds(ownResponse.data.all_ads.slice(0, 10));
+            if (ownResponse.data.all_ads.length > 10) {
                 setHasMoreAds(true);
             } else {
                 setHasMoreAds(false);
@@ -108,13 +64,10 @@ const ProfilePage = () => {
         }
     };
 
-// Function to replace displayed ads with stored ones
     const restoreAllAds = () => {
-        setAds(allAds); // Replace ads with stored ones
-        setHasMoreAds(false); // No more ads to load
+        setAds(allAds);
+        setHasMoreAds(false);
     };
-
-
 
     if (loading) {
         return <p>Загрузка...</p>;

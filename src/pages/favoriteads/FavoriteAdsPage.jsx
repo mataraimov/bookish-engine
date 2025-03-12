@@ -2,6 +2,8 @@ import React from 'react';
 import './FavoriteAdsPageStyle.css'
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {getFavoriteAdsR} from "../../app/tempApi.js";
+import {useCheckUser} from "../../hooks/useCheckUser.js";
 
 const FavoriteAdsPage = () => {
     const [ads, setAds] = useState([]);
@@ -17,31 +19,28 @@ const FavoriteAdsPage = () => {
         minPrice: "",
         maxPrice: ""
     });
-    const itemsPerPage = 7;
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     const navigate = useNavigate();
+    const token = localStorage.getItem("access_token")
+
+    useCheckUser()
 
     useEffect(() => {
-        generateDummyAds();
+        getAllAds();
     }, []);
 
     useEffect(() => {
         applyFilters();
     }, [filter, page, ads]);
 
-    const generateDummyAds = () => {
-        const regions = ["Bishkek", "Osh", "Chuy", "Talas", "Naryn", "Issyk-Kul", "Jalal-Abad", "Batken", "Osh Region"];
-        const ages = ["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"];
-        const allAds = Array.from({length: 35}, (_, i) => ({
-            id: i + 1,
-            animal: i % 2 === 0 ? "Cow" : "Horse",
-            breed: i % 2 === 0 ? "Angus" : "Arabian",
-            age: ages[i % ages.length],
-            region: regions[i % regions.length],
-            price: 30000 + (i * 2000),
-            photoUrl: `https://example.com/photos/animal${i + 1}.jpg`,
-        }));
-        setAds(allAds);
+    useEffect(() => {
+        setPage(1);
+    }, [filter]);
+
+    const getAllAds = async () => {
+        const allAds = getFavoriteAdsR(token);
+        setAds(await allAds.data);
         setFilteredAds(allAds.slice(0, itemsPerPage));
         setTotalItems(allAds.length);
     };
@@ -50,8 +49,8 @@ const FavoriteAdsPage = () => {
         let filtered = ads.filter(ad =>
             (filter.animal ? ad.animal.toLowerCase() === filter.animal.toLowerCase() : true) &&
             (filter.breed ? ad.breed.toLowerCase() === filter.breed.toLowerCase() : true) &&
-            (filter.minAge ? checkMinAge(ad.age, filter.minAge) : true) &&
-            (filter.maxAge ? checkMaxAge(ad.age, filter.maxAge) : true) &&
+            (filter.minAge ? checkMinAge(calculateAgeInMonths(ad.birthDate), filter.minAge, ads) : true) &&
+            (filter.maxAge ? checkMaxAge(calculateAgeInMonths(ad.birthDate), filter.maxAge, ads) : true) &&
             (filter.region ? ad.region.toLowerCase() === filter.region.toLowerCase() : true) &&
             (filter.minPrice ? ad.price >= parseInt(filter.minPrice) : true) &&
             (filter.maxPrice ? ad.price <= parseInt(filter.maxPrice) : true)
@@ -61,15 +60,40 @@ const FavoriteAdsPage = () => {
         setFilteredAds(filtered.slice(startIndex, startIndex + itemsPerPage));
     };
 
-    const checkMinAge = (adAge, minAge) => {
-        const ageOrder = ["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"];
+    const calculateAgeInMonths = (birthDate) => {
+        const birth = new Date(birthDate);
+        const today = new Date();
+        return (today.getFullYear() - birth.getFullYear()) * 12 + (today.getMonth() - birth.getMonth());
+    };
+
+    const calculateAgeInYears = (months) => {
+        switch (Math.floor(months/12)){
+            case 0:
+                return (Math.floor(months/12)+' лет');
+            case 1:
+                return (Math.floor(months/12)+' год')
+            case 2:
+                return (Math.floor(months/12)+' года')
+            case 3:
+                return (Math.floor(months/12)+' года')
+            case 4:
+                return (Math.floor(months/12)+' года')
+            default:
+                return (Math.floor(months/12)+' лет')
+        }
+    }
+
+    const checkMinAge = (adAge, minAge, ads) => {
+        const ageOrder = uniqueAges(ads);
         return ageOrder.indexOf(adAge) >= ageOrder.indexOf(minAge);
     };
 
-    const checkMaxAge = (adAge, maxAge) => {
-        const ageOrder = ["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"];
+    const checkMaxAge = (adAge, maxAge, ads) => {
+        const ageOrder = uniqueAges(ads);
         return ageOrder.indexOf(adAge) <= ageOrder.indexOf(maxAge);
     };
+
+    const uniqueAges = (ads) => [...new Set(ads.map(ad => calculateAgeInMonths(ad.birthDate)))].sort((a, b) => a - b);
 
     const uniqueValues = (key) => [...new Set(ads.map(ad => ad[key]))];
 
@@ -85,74 +109,66 @@ const FavoriteAdsPage = () => {
             setPage(page - 1);
         }
     };
-    // const fetchAds = async (currentPage) => {
-    //     try {
-    //         const response = await fetch(`https://api.example.com/ads?page=${currentPage}&limit=${itemsPerPage}`);
-    //         const data = await response.json();
-    //         setAds(data.ads);
-    //         setTotalItems(data.totalItems);
-    //     } catch (error) {
-    //         console.error("Error fetching ads:", error);
-    //     }
-    // };
     return (
         <div>
-            <h1>Избранные Обьявления</h1>
+            <h1>Избранные Объявления</h1>
             <div>
                 <label>
-                    Animal:
+                    Животное:
                     <select value={filter.animal}
                             onChange={e => setFilter({...filter, animal: e.target.value, breed: ""})}>
-                        <option value="">All</option>
+                        <option value="">Любое</option>
                         {uniqueValues("animal").map(animal => (
                             <option key={animal} value={animal}>{animal}</option>
                         ))}
                     </select>
                 </label>
                 <label>
-                    Breed:
+                    Порода:
                     <select value={filter.breed} disabled={!filter.animal}
                             onChange={e => setFilter({...filter, breed: e.target.value})}>
-                        <option value="">All</option>
+                        <option value="">Любая</option>
                         {uniqueValues("breed").filter(breed => ads.find(ad => ad.animal === filter.animal && ad.breed === breed)).map(breed => (
                             <option key={breed} value={breed}>{breed}</option>
                         ))}
                     </select>
                 </label>
                 <label>
-                    Min Age:
-                    <select value={filter.minAge} onChange={e => setFilter({...filter, minAge: e.target.value})}>
-                        <option value="">Any</option>
-                        {["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"].map(age => (
-                            <option key={age} value={age}>{age}</option>
+                    Возраст от:
+                    <select value={filter.minAge}
+                            onChange={e => setFilter({...filter, minAge: Number(e.target.value)})}>
+                        <option value="">-</option>
+                        {uniqueAges(ads).map(age => (
+                            <option key={age} value={age}>{age} месяцев</option>
                         ))}
                     </select>
                 </label>
                 <label>
-                    Max Age:
-                    <select value={filter.maxAge} onChange={e => setFilter({...filter, maxAge: e.target.value})}>
-                        <option value="">Any</option>
-                        {["3 months", "6 months", "9 months", "1 year", "1.5 years", "2 years", "3 years", "3+"].map(age => (
-                            <option key={age} value={age}>{age}</option>
+                    до:
+                    <select value={filter.maxAge}
+                            onChange={e => setFilter({...filter, maxAge: Number(e.target.value)})}>
+                        <option value="">-</option>
+                        {uniqueAges(ads).map(age => (
+                            <option key={age} value={age}>{age} месяцев</option>
                         ))}
                     </select>
                 </label>
                 <label>
-                    Region:
+                    Регион:
                     <select value={filter.region} onChange={e => setFilter({...filter, region: e.target.value})}>
-                        <option value="">All</option>
+                        <option value="">Все</option>
                         {uniqueValues("region").map(region => (
                             <option key={region} value={region}>{region}</option>
                         ))}
                     </select>
                 </label>
                 <label>
-                    Min Price:
+                    Цена от:
                     <input type="number" value={filter.minPrice}
                            onChange={e => setFilter({...filter, minPrice: e.target.value})}/>
                 </label>
                 <label>
-                    Max Price:
+                    до:
                     <input type="number" value={filter.maxPrice}
                            onChange={e => setFilter({...filter, maxPrice: e.target.value})}/>
                 </label>
@@ -162,9 +178,9 @@ const FavoriteAdsPage = () => {
                     <div key={ad.id} onClick={() => navigate(`/ad/${ad.id}`)} style={{cursor: "pointer"}}>
                         <img src={ad.photoUrl} alt={ad.breed}/>
                         <h2>{ad.breed} ({ad.animal})</h2>
-                        <p>Age: {ad.age}</p>
-                        <p>Region: {ad.region}</p>
-                        <p>Price: {ad.price} som</p>
+                        <p>Возраст: {calculateAgeInMonths(ad.birthDate)} ({calculateAgeInYears(calculateAgeInMonths(ad.birthDate))}) Месяцев</p>
+                        <p>Регион: {ad.region}</p>
+                        <p>Цена: {ad.price} сом</p>
                     </div>
                 ))}
             </div>

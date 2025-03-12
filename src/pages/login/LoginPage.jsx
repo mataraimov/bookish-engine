@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../app/api.js';
+import { useNavigate ,Link } from 'react-router-dom';
+import {getUserR, loginUserR} from '../../app/tempApi.js';
 import {UserContext} from "../../App.jsx";
 import './LoginPageStyle.css';
-import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -45,17 +44,18 @@ const LoginPage = () => {
         setError(null);
 
         try {
-            const response = await loginUser(formData);
-            if (response.status === 200 && response.data.access_token) {
-                localStorage.setItem('access_token', response.data.access_token);
-                setUser(true);
+            const response = await loginUserR(formData);
+            if (response.status === 200 && response.data.token) {
+                localStorage.setItem('access_token', response.data.token)
+                const token = localStorage.getItem('access_token');
+                await getUserR(token)
+                setUser(getUserR.data);
                 navigate('/confirm-mail');
             } else {
                 setError(response.message || 'Ошибка входа!');
             }
-            // eslint-disable-next-line no-unused-vars
         } catch (err) {
-            setError('Ошибка сервера! Попробуйте позже.');
+            setError(err||'Ошибка сервера! Попробуйте позже.');
         }
     };
 

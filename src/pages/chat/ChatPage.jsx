@@ -2,6 +2,11 @@ import React from 'react';
 import './ChatPageStyle.css'
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {useCheckUser} from "../../hooks/useCheckUser.js";
+
+
+// нужно добавить WebSocket
+
 
 const ChatPage = () => {
     const { chatId } = useParams();
@@ -11,6 +16,8 @@ const ChatPage = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [messageLimitExceeded, setMessageLimitExceeded] = useState(false);
+
+    useCheckUser()
 
     useEffect(() => {
         fetchChats();

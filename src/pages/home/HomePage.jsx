@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import'./HomePageStyle.css'
 import {useNavigate} from "react-router-dom";
-import {fetchTopAds} from "../../app/api.js";
+import {fetchTopAdsR} from "../../app/tempApi.js";
 
 const HomePage = () => {
     const [ads, setAds] = useState([]);
@@ -10,8 +10,10 @@ const HomePage = () => {
     useEffect(() => {
         const getAds = async () => {
             try {
-                const response = await fetchTopAds ();
-                setAds(response);
+                const response = await fetchTopAdsR();
+                if (response.status === 200||response.status === 201) {
+                    setAds(response.data);
+                }
             } catch (error) {
                 console.error(error);
             }
