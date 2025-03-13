@@ -1,7 +1,7 @@
 import './ChangeAdPageStyle.css'
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {getAdByIdR, getAnimalsListR, updateAdR} from "../../app/tempApi.js";
+import {getAdR, getAnimalsListR, updateAdR} from "../../app/tempApi.js";
 import {useCheckUser} from "../../hooks/useCheckUser.js";
 
 const ChangeAdPage = () => {
@@ -31,7 +31,7 @@ const ChangeAdPage = () => {
     useEffect(() => {
         const fetchAdData = async () => {
             try {
-                const adData = await getAdByIdR(id,token);
+                const adData = await getAdR(id,token);
                 let animalsList = await getAnimalsListR(token);
                 setFormData({
                     animal: adData.data.animal,

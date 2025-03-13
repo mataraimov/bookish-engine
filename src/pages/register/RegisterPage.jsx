@@ -1,7 +1,7 @@
 import './RegisterPageStyle.css';
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {registerUserR} from '../../app/api.js';
+import {registerUserR} from '../../app/tempApi.js';
 import countryPhoneCodes from '../../app/countryPhoneCodes.jsx';
 
 const RegisterPage = () => {
