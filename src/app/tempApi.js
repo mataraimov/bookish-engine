@@ -2,18 +2,18 @@
 export const fetchTopAdsR = async () => {
     return {
         data:[
-            { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://via.placeholder.com/150' },
-            { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://via.placeholder.com/150' }
+            { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+            { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' }
         ],
         status:200,
     }
@@ -129,9 +129,7 @@ export const getNewMessagesCountR = async (token) => {
     return {
         status:200,
         data:[
-            {
-                message_count:Math.floor(Math.random()*100),
-            }
+            
         ]
     }
 }
@@ -197,18 +195,18 @@ export const getUserR = async (token)=>{
             phone: '+996 555 123 456',
             photo: 'https://via.placeholder.com/100',
             all_ads: [
-                { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://via.placeholder.com/150' },
-                { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://via.placeholder.com/150' }
+                { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' }
             ]
         }
     }
@@ -223,18 +221,18 @@ export const getUserByIdR = async (id,token)=>{
                 phone: '+996 555 123 456',
                 photo: 'https://via.placeholder.com/100',
                 all_ads: [
-                    { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://via.placeholder.com/150' },
-                    { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://via.placeholder.com/150' }
+                    { id: '1', animal: 'Корова', breed: 'Ангус', price: '200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '2', animal: 'Лошадь', breed: 'Ахалтекинская', price: '500,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '3', animal: 'Овца', breed: 'Меринос', price: '30,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '4', animal: 'Коза', breed: 'Альпийская', price: '25,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '5', animal: 'Верблюд', breed: 'Бактриан', price: '1,200,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '6', animal: 'Бык', breed: 'Шароле', price: '450,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '7', animal: 'Курица', breed: 'Леггорн', price: '5,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '8', animal: 'Утка', breed: 'Мускусная', price: '7,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '9', animal: 'Гусь', breed: 'Тулузский', price: '12,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '10', animal: 'Кролик', breed: 'Фландр', price: '10,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '11', animal: 'Лама', breed: 'Гуанако', price: '600,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' },
+                    { id: '12', animal: 'Индейка', breed: 'Бронзовая', price: '15,000 KGS', photo: 'https://t3.ftcdn.net/jpg/03/26/50/04/360_F_326500445_ZD1zFSz2cMT1qOOjDy7C5xCD4shawQfM.jpg' }
                 ],
         },
     }
